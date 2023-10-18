@@ -1,19 +1,19 @@
-package com.ramcel.cinema.reservation.screening;
+package com.ramcel.cinema.reservation.db;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@Entity
-@Data
-@NoArgsConstructor
-public class RoomEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+@Entity
+@Table(name = "rooms")
+@Data
+@EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
+public class RoomEntity extends BaseEntity{
 
     private int numberOfRows;
 

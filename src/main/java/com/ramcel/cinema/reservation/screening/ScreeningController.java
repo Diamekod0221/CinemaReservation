@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/screening")
@@ -17,10 +17,10 @@ public class ScreeningController {
     @Autowired
     private ScreeningService screeningService;
 
-    @GetMapping(value = "/find-screenings/{date}/{timestamp}",
+    @GetMapping(value = "/find-screenings/{date}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public String findScreenings(@PathVariable("date") LocalDate date, @PathVariable("timestamp") LocalTime time){
-
+    public List<Screening> findScreenings(@PathVariable("date") LocalDateTime dateTime){
+        return screeningService.findScreenings(dateTime);
     }
 
 

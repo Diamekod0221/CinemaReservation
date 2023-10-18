@@ -1,17 +1,17 @@
-package com.ramcel.cinema.reservation.screening;
+package com.ramcel.cinema.reservation.db;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
 
-@Entity
-@Data
-public class ScreeningEntity {
 
-    @Id
-    @GeneratedValue
-    private long id;
+@Entity
+@Table(name = "screenings")
+@EqualsAndHashCode(callSuper = true)
+@Data
+public class ScreeningEntity extends BaseEntity{
 
     @ManyToOne
     @JoinColumn(name = "movie_id")

@@ -1,20 +1,20 @@
-package com.ramcel.cinema.reservation.ticket;
+package com.ramcel.cinema.reservation.db;
 
-import com.ramcel.cinema.reservation.screening.ScreeningEntity;
-import com.ramcel.cinema.reservation.seat.SeatEntity;
+import com.ramcel.cinema.reservation.ticket.TicketType;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Entity
-@Data
-@NoArgsConstructor
-public class TicketEntity {
 
-    @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+@Entity
+@Table(name = "tickets")
+@Data
+@EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
+public class TicketEntity extends BaseEntity{
 
     private String name;
 

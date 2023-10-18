@@ -1,19 +1,19 @@
-package com.ramcel.cinema.reservation.seat;
+package com.ramcel.cinema.reservation.db;
 
-import com.ramcel.cinema.reservation.screening.RoomEntity;
-import com.ramcel.cinema.reservation.screening.RoomRowEntity;
-import com.ramcel.cinema.reservation.screening.ScreeningEntity;
+import com.ramcel.cinema.reservation.seat.SeatStatus;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+
 
 @Entity
 @Data
+@Table(name = "seats")
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-public class SeatEntity {
+public class SeatEntity extends BaseEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
 
     @ManyToOne
     @JoinColumn(name = "room_id")
@@ -30,8 +30,6 @@ public class SeatEntity {
     private ScreeningEntity screening;
 
     private boolean isOccupied;
-
-    static enum SeatStatus {AVAILABLE, RESERVED, BOUGHT};
 
     private SeatStatus status;
 }
