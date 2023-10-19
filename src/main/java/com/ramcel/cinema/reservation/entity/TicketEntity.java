@@ -1,10 +1,8 @@
-package com.ramcel.cinema.reservation.db;
+package com.ramcel.cinema.reservation.entity;
 
 import com.ramcel.cinema.reservation.ticket.TicketType;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -13,6 +11,8 @@ import java.time.LocalDateTime;
 @Table(name = "tickets")
 @Data
 @EqualsAndHashCode(callSuper = true)
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class TicketEntity extends BaseEntity{
 

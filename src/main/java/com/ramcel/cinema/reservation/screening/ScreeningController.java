@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+//todo:add input validation(@valid), exception hanlding for input
 @RestController
 @RequestMapping("/screening")
 public class ScreeningController {
@@ -24,7 +25,7 @@ public class ScreeningController {
     public ResponseEntity<List<Screening>> findScreenings(@PathVariable("date") LocalDateTime dateTime){
         List<Screening> resultList = screeningService.findScreenings(dateTime);
 
-        return checkResponse(resultList);
+        return getResponse(resultList);
     }
 
     @GetMapping(value = "/find-screenings/{movie}/{date}",
@@ -32,10 +33,10 @@ public class ScreeningController {
     public ResponseEntity<List<Screening>> findScreenings(@PathVariable("movie") Movie movie, @PathVariable("date") LocalDateTime date){
         List<Screening> resultList = screeningService.findScreenings(movie, date);
 
-        return checkResponse(resultList);
+        return getResponse(resultList);
     }
 
-    private ResponseEntity<List<Screening>> checkResponse(List<Screening> resultList){
+    private <T> ResponseEntity<List<T>> getResponse(List<T> resultList){
         return Optional.of(resultList)
                 .filter(list -> !list.isEmpty())
                 .map(ResponseEntity::ok)

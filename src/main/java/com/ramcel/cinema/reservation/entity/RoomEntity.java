@@ -1,7 +1,6 @@
-package com.ramcel.cinema.reservation.db;
+package com.ramcel.cinema.reservation.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;

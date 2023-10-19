@@ -1,5 +1,6 @@
-package com.ramcel.cinema.reservation.db;
+package com.ramcel.cinema.reservation.entity;
 
+import com.ramcel.cinema.reservation.seat.Seat;
 import com.ramcel.cinema.reservation.seat.SeatStatus;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -32,4 +33,16 @@ public class SeatEntity extends BaseEntity {
     private boolean isOccupied;
 
     private SeatStatus status;
+
+    public Seat mapToSeat(){
+        return Seat.builder()
+                .seatId(super.getId())
+                .roomId(room.getId())
+                .roomRowId(roomRow.getId())
+                .seatNumber(seatNumber)
+                .screeningId(screening.getId())
+                .isOccupied(isOccupied)
+                .status(status)
+                .build();
+    }
 }

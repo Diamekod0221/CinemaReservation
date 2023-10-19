@@ -15,13 +15,13 @@ public class Seat {
 
     private final long seatId;
 
-    private final Room room;
+    private final long roomId;
 
-    private final RoomRow roomRow;
+    private final long roomRowId;
 
     private final int seatNumber;
 
-    private final Screening screening;
+    private final long screeningId;
 
     private boolean isOccupied;
 

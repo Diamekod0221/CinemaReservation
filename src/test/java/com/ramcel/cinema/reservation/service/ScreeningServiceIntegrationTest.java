@@ -1,7 +1,7 @@
 package com.ramcel.cinema.reservation.service;
 
 
-import com.ramcel.cinema.reservation.db.ScreeningRepository;
+import com.ramcel.cinema.reservation.repositories.ScreeningRepository;
 import com.ramcel.cinema.reservation.screening.Movie;
 import com.ramcel.cinema.reservation.screening.Screening;
 import com.ramcel.cinema.reservation.screening.ScreeningServiceImpl;

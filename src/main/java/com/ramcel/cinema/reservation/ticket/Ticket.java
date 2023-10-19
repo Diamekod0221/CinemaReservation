@@ -1,22 +1,24 @@
 package com.ramcel.cinema.reservation.ticket;
 
-import com.ramcel.cinema.reservation.db.ScreeningEntity;
-import com.ramcel.cinema.reservation.db.SeatEntity;
-import com.ramcel.cinema.reservation.screening.Screening;
-import com.ramcel.cinema.reservation.seat.Seat;
+import com.ramcel.cinema.reservation.entity.TicketEntity;
+import lombok.Builder;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 
+@Builder
+@Getter
 public class Ticket {
-    private String name;
+    private final String name;
 
-    private String surname;
+    private final String surname;
 
-    private long screeningId;
+    private final long screeningId;
 
-    private LocalDateTime screeningDate;
+    private final LocalDateTime screeningDate;
 
-    private int seatId;
+    private final long seatId;
 
-    private TicketType type;
+    private final TicketType type;
+
 }

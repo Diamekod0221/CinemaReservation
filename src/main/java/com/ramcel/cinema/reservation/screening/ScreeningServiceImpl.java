@@ -1,7 +1,7 @@
 package com.ramcel.cinema.reservation.screening;
 
-import com.ramcel.cinema.reservation.db.ScreeningEntity;
-import com.ramcel.cinema.reservation.db.ScreeningRepository;
+import com.ramcel.cinema.reservation.entity.ScreeningEntity;
+import com.ramcel.cinema.reservation.repositories.ScreeningRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

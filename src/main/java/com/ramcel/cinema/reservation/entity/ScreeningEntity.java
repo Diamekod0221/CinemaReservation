@@ -1,4 +1,4 @@
-package com.ramcel.cinema.reservation.db;
+package com.ramcel.cinema.reservation.entity;
 
 import com.ramcel.cinema.reservation.screening.Screening;
 import jakarta.persistence.*;

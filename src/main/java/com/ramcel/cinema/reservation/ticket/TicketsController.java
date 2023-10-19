@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+//todo:add input validation(@valid)
 @RestController
 @RequestMapping("/tickets")
 public class TicketsController {

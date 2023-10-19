@@ -1,7 +1,7 @@
 package com.ramcel.cinema.reservation.screening;
 
 
-import com.ramcel.cinema.reservation.db.MovieEntity;
+import com.ramcel.cinema.reservation.entity.MovieEntity;
 
 public record Movie(String name, long runTimeInSeconds) {
 
