@@ -5,5 +5,5 @@ import com.ramcel.cinema.reservation.db.RoomEntity;
 
 import java.time.LocalDateTime;
 
-public record Screening(long id, MovieEntity movieEntity, RoomEntity roomEntity, LocalDateTime dateTime) {
+public record Screening(long id, Movie movie, long roomId, LocalDateTime dateTime) {
 }

@@ -5,6 +5,6 @@ import jakarta.persistence.OneToMany;
 
 import java.util.List;
 
-public record Room(int numberOfRows, List<RoomRowEntity> roomRows) {
+public record Room(long id, int numberOfRows, List<RoomRow> roomRows) {
 
 }

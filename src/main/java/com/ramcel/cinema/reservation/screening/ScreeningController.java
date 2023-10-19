@@ -23,6 +23,12 @@ public class ScreeningController {
         return screeningService.findScreenings(dateTime);
     }
 
+    @GetMapping(value = "/find-screenings/{movie}/{date}",
+    produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Screening> findScreenings(@PathVariable("movie") Movie movie, @PathVariable("date") LocalDateTime date){
+        return screeningService.findScreenings(movie, date);
+    }
+
 
 
 }

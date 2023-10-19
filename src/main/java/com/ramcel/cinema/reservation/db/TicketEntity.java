@@ -24,8 +24,8 @@ public class TicketEntity extends BaseEntity{
     @JoinColumn(name = "screening_id")
     private ScreeningEntity screening;
 
-    @ManyToOne
-    @JoinColumn(name = "screening_date_time")
+
+    @Column(name = "screening_start_time", columnDefinition = "TIMESTAMP")
     private LocalDateTime screeningDate;
 
     @OneToOne
