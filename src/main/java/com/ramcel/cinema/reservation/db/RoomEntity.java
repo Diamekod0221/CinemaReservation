@@ -1,6 +1,7 @@
 package com.ramcel.cinema.reservation.db;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -17,7 +18,7 @@ public class RoomEntity extends BaseEntity{
 
     private int numberOfRows;
 
-    @OneToMany(mappedBy = "cinemaRoom")
+    @OneToMany(mappedBy = "cinemaRoom", fetch = FetchType.EAGER)
     private List<RoomRowEntity> roomRows;
 
     public RoomEntity(List<RoomRowEntity> roomRows){

@@ -9,10 +9,13 @@ import com.ramcel.cinema.reservation.screening.Screening;
 import com.ramcel.cinema.reservation.screening.ScreeningServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,7 +26,6 @@ import static org.mockito.Mockito.when;
 
 
 @SpringBootTest
-@Sql(scripts = {"/import_movies.sql", "/import_rooms.sql", "/import_screenings.sql"})
 public class ScreeningServiceTest{
 
     @Autowired
@@ -43,12 +45,17 @@ public class ScreeningServiceTest{
         startPeriod = LocalDateTime.of(2023,10,19,0,30);
         endPeriod =  LocalDateTime.of(2023,10,19,5,0);
 
+        RoomEntity mockRoom = new RoomEntity();
+        mockRoom.setId(1L);
+        mockRoom.setNumberOfRows(10);
+
 
         testEntity = new ScreeningEntity(
                 new MovieEntity("Star Wars", 3600),
-                new RoomEntity(),
+                mockRoom,
                 endPeriod.minusMinutes(45)
         );
+        testEntity.setId(1L);
     }
 
     @Test
@@ -80,23 +87,31 @@ public class ScreeningServiceTest{
     }
 
     @Test
-    public void findValidScreeningDB(){
-        LocalDateTime input = LocalDateTime.of(2023, 10,10, 3, 0);
+    public void findValidMovieScreeningsMockByMovie(){
+        LocalDateTime input = LocalDateTime.of(2023, 10,19, 1, 0);
 
-        List<Screening> actual = screeningService.findScreenings(input);
+        Movie testMovie = new Movie("Star Wars", 3600);
 
-        Screening expectedScreening1 = new Screening(1,
-                new Movie("Star Wars", 3600),
-                1,
-                LocalDateTime.of(2023,10,10, 4,15));
+        when(screeningRepository.findScreeningsInPeriod(startPeriod,endPeriod))
+                .thenReturn(List.of(testEntity));
 
-        Screening expectedScreening2 = new Screening(2,
-                new Movie("Captain Hook", 5400),
-                2,
-                LocalDateTime.of(2023,10,10, 6,15));
+        List<Screening> screeningList = screeningService.findScreenings(testMovie, input);
 
-        assertEquals(List.of(expectedScreening1,expectedScreening2), actual);
+        assertEquals(List.of(testEntity.mapToScreening()), screeningList);
+        verify(this.screeningRepository).findScreeningsInPeriod(startPeriod,endPeriod);
+    }
 
+    @Test
+    public void findInvalidScreeningsMock(){
+
+        LocalDateTime input = LocalDateTime.of(2022, 10,19, 1, 0);
+
+        when(screeningRepository.findScreeningsInPeriod(startPeriod.minusYears(1),endPeriod.minusYears(1)))
+                .thenReturn(List.of());
+
+        List<Screening> screeningList = screeningService.findScreenings(input);
+
+        assertEquals(List.of(), screeningList);
     }
 
 
