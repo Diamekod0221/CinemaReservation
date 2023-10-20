@@ -1,12 +1,12 @@
 package com.ramcel.cinema.reservation.service;
 
-import com.ramcel.cinema.reservation.entity.MovieEntity;
-import com.ramcel.cinema.reservation.entity.RoomEntity;
-import com.ramcel.cinema.reservation.entity.ScreeningEntity;
-import com.ramcel.cinema.reservation.repositories.ScreeningRepository;
-import com.ramcel.cinema.reservation.screening.Movie;
-import com.ramcel.cinema.reservation.screening.Screening;
-import com.ramcel.cinema.reservation.screening.ScreeningServiceImpl;
+import com.ramcel.cinema.reservation.db.entity.MovieEntity;
+import com.ramcel.cinema.reservation.db.entity.RoomEntity;
+import com.ramcel.cinema.reservation.db.entity.ScreeningEntity;
+import com.ramcel.cinema.reservation.db.repositories.ScreeningRepository;
+import com.ramcel.cinema.reservation.functionalities.screening.Movie;
+import com.ramcel.cinema.reservation.functionalities.screening.Screening;
+import com.ramcel.cinema.reservation.functionalities.screening.ScreeningServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

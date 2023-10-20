@@ -1,10 +1,10 @@
 package com.ramcel.cinema.reservation.service;
 
 
-import com.ramcel.cinema.reservation.repositories.ScreeningRepository;
-import com.ramcel.cinema.reservation.screening.Movie;
-import com.ramcel.cinema.reservation.screening.Screening;
-import com.ramcel.cinema.reservation.screening.ScreeningServiceImpl;
+import com.ramcel.cinema.reservation.db.repositories.ScreeningRepository;
+import com.ramcel.cinema.reservation.functionalities.screening.Movie;
+import com.ramcel.cinema.reservation.functionalities.screening.Screening;
+import com.ramcel.cinema.reservation.functionalities.screening.ScreeningServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
