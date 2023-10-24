@@ -1,5 +1,6 @@
 package com.ramcel.cinema.reservation.functionalities.seat;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,7 @@ public class SeatController {
     private SeatService seatService;
 
     @GetMapping(name = "/get-seats/{id}")
-    public ResponseEntity<List<Seat>> getAvailableSeatsByScreening(@PathVariable long screeningId) {
+    public ResponseEntity<List<Seat>> getAvailableSeatsByScreening(@Valid @PathVariable long screeningId) {
         List<Seat> resultList = seatService.getAvailableSeats(screeningId);
         return getResponse(resultList);
     }

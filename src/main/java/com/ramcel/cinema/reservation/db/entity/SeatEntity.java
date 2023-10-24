@@ -1,5 +1,6 @@
 package com.ramcel.cinema.reservation.db.entity;
 
+import com.ramcel.cinema.reservation.functionalities.exception.SeatReservationException;
 import com.ramcel.cinema.reservation.functionalities.seat.Seat;
 import com.ramcel.cinema.reservation.functionalities.seat.SeatStatus;
 import jakarta.persistence.*;
@@ -30,8 +31,9 @@ public class SeatEntity extends BaseEntity {
     @JoinColumn(name = "screening_id")
     private ScreeningEntity screening;
 
-    private boolean isOccupied;
+    private boolean isOccupied = false;
 
+    @Enumerated(EnumType.STRING)
     private SeatStatus status;
 
     public Seat mapToSeat(){
@@ -44,5 +46,23 @@ public class SeatEntity extends BaseEntity {
                 .isOccupied(isOccupied)
                 .status(status)
                 .build();
+    }
+
+
+    public void reserve() throws SeatReservationException {
+        if(status == SeatStatus.BOUGHT){
+            throw new SeatReservationException("Seat already bought!");
+        }
+        status = SeatStatus.RESERVED;
+        isOccupied = true;
+    }
+    public void buy(){
+        status = SeatStatus.BOUGHT;
+        isOccupied = true;
+    }
+
+    public void free(){
+        status = SeatStatus.AVAILABLE;
+        isOccupied = false;
     }
 }

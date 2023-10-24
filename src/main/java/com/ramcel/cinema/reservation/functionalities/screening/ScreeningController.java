@@ -1,5 +1,6 @@
 package com.ramcel.cinema.reservation.functionalities.screening;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,7 @@ public class ScreeningController {
 
     @GetMapping(value = "/find-screenings/{date}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Screening>> findScreenings(@PathVariable("date") LocalDateTime dateTime){
+    public ResponseEntity<List<Screening>> findScreenings(@Valid @PathVariable("date") LocalDateTime dateTime){
         List<Screening> resultList = screeningService.findScreenings(dateTime);
 
         return getResponse(resultList);
@@ -30,7 +31,7 @@ public class ScreeningController {
 
     @GetMapping(value = "/find-screenings/{movie}/{date}",
     produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Screening>> findScreenings(@PathVariable("movie") Movie movie, @PathVariable("date") LocalDateTime date){
+    public ResponseEntity<List<Screening>> findScreenings(@Valid @PathVariable("movie") Movie movie, @Valid @PathVariable("date") LocalDateTime date){
         List<Screening> resultList = screeningService.findScreenings(movie, date);
 
         return getResponse(resultList);

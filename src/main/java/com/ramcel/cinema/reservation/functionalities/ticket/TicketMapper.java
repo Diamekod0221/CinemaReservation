@@ -46,4 +46,10 @@ public class TicketMapper {
                         .type(ticket.getType())
                         .build();
     }
+
+    public TicketEntity mapToReservedEntity(Ticket ticket) throws IllegalArgumentException{
+        TicketEntity baseEntity = mapToEntity(ticket);
+        baseEntity.reserve();
+        return baseEntity;
+    }
 }

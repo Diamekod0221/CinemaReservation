@@ -1,30 +1,33 @@
 package com.ramcel.cinema.reservation.functionalities.ticket;
 
 import com.ramcel.cinema.reservation.db.entity.TicketEntity;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 public class Ticket {
-    private final String name;
+    private String name;
 
-    private final String surname;
+    private String surname;
 
-    private final long screeningId;
+    private long screeningId;
 
-    private final LocalDateTime screeningDate;
+    private LocalDateTime screeningDate;
 
-    private final long seatId;
+    private long seatId;
 
-    private final TicketType type;
+    private TicketType type;
 
     @Override
     public String toString(){
         return "Holder surname: " + surname + " , screening: " + screeningId + " ,seat: " + seatId;
     }
-
 
 }

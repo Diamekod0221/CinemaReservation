@@ -1,5 +1,6 @@
 package com.ramcel.cinema.reservation.db.entity;
 
+import com.ramcel.cinema.reservation.functionalities.seat.SeatStatus;
 import com.ramcel.cinema.reservation.functionalities.ticket.TicketType;
 import jakarta.persistence.*;
 import lombok.*;
@@ -33,4 +34,30 @@ public class TicketEntity extends BaseEntity{
     private SeatEntity seat;
 
     private TicketType type;
+
+    //pass null if the ticket is not reserved but bought (no
+    @Column(name = "reservation_expiration", columnDefinition = "TIMESTAMP")
+    private LocalDateTime expirationDate;
+
+    @Transient
+    boolean isReservation;
+
+    @PrePersist
+    public void prePersist() {
+        if (expirationDate == null) {
+            if (isReservation) {
+                expirationDate = LocalDateTime.now().plusDays(1);
+            }
+        }
+    }
+
+    public void reserve(){
+        isReservation = true;
+    }
+
+    public void buy(){
+        isReservation = false;
+    }
+
+
 }

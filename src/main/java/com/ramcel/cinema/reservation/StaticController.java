@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 @Controller
 @RequestMapping("/static")
 public class StaticController {
-
     public String welcomePage(){
         return "welcome";
     }
