@@ -1,5 +1,7 @@
-package com.ramcel.cinema.reservation.functionalities.seat;
+package com.ramcel.cinema.reservation.functionalities.controllers;
 
+import com.ramcel.cinema.reservation.functionalities.seat.Seat;
+import com.ramcel.cinema.reservation.functionalities.seat.SeatService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -8,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-//todo:add input validation(@valid), exception handling for input
 @RestController
 @RequestMapping("/seat")
 public class SeatController {

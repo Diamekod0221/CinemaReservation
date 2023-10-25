@@ -1,7 +1,9 @@
-package com.ramcel.cinema.reservation.functionalities.ticket;
+package com.ramcel.cinema.reservation.functionalities.controllers;
 
 import com.ramcel.cinema.reservation.functionalities.exception.IllegalReservationException;
 import com.ramcel.cinema.reservation.functionalities.reservation.Reservation;
+import com.ramcel.cinema.reservation.functionalities.ticket.Ticket;
+import com.ramcel.cinema.reservation.functionalities.ticket.TicketService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-//todo:add input validation(@valid)
 @RestController
 @RequestMapping("/tickets")
 public class TicketsController {
@@ -19,11 +20,8 @@ public class TicketsController {
     TicketService ticketService;
 
     @PostMapping(name = "/book-tickets")
-    public ResponseEntity<Reservation> bookTickets(@Valid @RequestBody List<Ticket> ticketList){
-        try{ return ResponseEntity.ok(ticketService.bookTicket(ticketList));}
-        catch (IllegalReservationException e){
-            return ResponseEntity.badRequest().build();
-        }
+    public ResponseEntity<Reservation> bookTickets(@Valid @RequestBody List<Ticket> ticketList) throws IllegalReservationException{
+         return ResponseEntity.ok(ticketService.bookTicket(ticketList));
     }
 
 

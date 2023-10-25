@@ -1,6 +1,6 @@
 package com.ramcel.cinema.reservation.db.entity;
 
-import com.ramcel.cinema.reservation.functionalities.exception.SeatReservationException;
+import com.ramcel.cinema.reservation.functionalities.exception.IllegalSeatException;
 import com.ramcel.cinema.reservation.functionalities.seat.Seat;
 import com.ramcel.cinema.reservation.functionalities.seat.SeatStatus;
 import jakarta.persistence.*;
@@ -49,9 +49,9 @@ public class SeatEntity extends BaseEntity {
     }
 
 
-    public void reserve() throws SeatReservationException {
+    public void reserve() throws IllegalSeatException {
         if(status == SeatStatus.BOUGHT){
-            throw new SeatReservationException("Seat already bought!");
+            throw new IllegalSeatException("Seat already bought!");
         }
         status = SeatStatus.RESERVED;
         isOccupied = true;

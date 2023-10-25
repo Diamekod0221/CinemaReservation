@@ -2,7 +2,7 @@ package com.ramcel.cinema.reservation.controller;
 
 import com.ramcel.cinema.reservation.functionalities.screening.Movie;
 import com.ramcel.cinema.reservation.functionalities.screening.Screening;
-import com.ramcel.cinema.reservation.functionalities.screening.ScreeningController;
+import com.ramcel.cinema.reservation.functionalities.controllers.ScreeningController;
 import com.ramcel.cinema.reservation.functionalities.screening.ScreeningService;
 import com.ramcel.cinema.reservation.screening.*;
 import org.junit.jupiter.api.Test;

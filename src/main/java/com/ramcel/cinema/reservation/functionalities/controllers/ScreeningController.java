@@ -1,5 +1,8 @@
-package com.ramcel.cinema.reservation.functionalities.screening;
+package com.ramcel.cinema.reservation.functionalities.controllers;
 
+import com.ramcel.cinema.reservation.functionalities.screening.Movie;
+import com.ramcel.cinema.reservation.functionalities.screening.Screening;
+import com.ramcel.cinema.reservation.functionalities.screening.ScreeningService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -13,7 +16,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-//todo:add input validation(@valid), exception hanlding for input
 @RestController
 @RequestMapping("/screening")
 public class ScreeningController {
