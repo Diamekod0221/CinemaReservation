@@ -1,12 +1,16 @@
 package com.ramcel.cinema.reservation.controller;
 
-import com.ramcel.cinema.reservation.functionalities.controllers.ScreeningController;
+import com.ramcel.cinema.reservation.functionalities.controllers.SeatController;
 import com.ramcel.cinema.reservation.functionalities.screening.Movie;
 import com.ramcel.cinema.reservation.functionalities.screening.Screening;
 import com.ramcel.cinema.reservation.functionalities.screening.ScreeningService;
+import com.ramcel.cinema.reservation.functionalities.seat.Seat;
+import com.ramcel.cinema.reservation.functionalities.seat.SeatService;
+import com.ramcel.cinema.reservation.functionalities.seat.SeatStatus;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -18,46 +22,52 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
-@WebMvcTest(ScreeningController.class)
-public class ScreeningControllerTest {
+@WebMvcTest(SeatController.class)
+public class SeatControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
-    private ScreeningService screeningService;
+    private SeatService seatService;
 
     @Test
-    public void return204OnEmptyDate() throws Exception {
-        when(screeningService.findScreenings(LocalDateTime.of(2022,10,19,2,30))).thenReturn(Collections.emptyList());
+    public void return204OnFullScreening() throws Exception {
+        when(seatService.getAvailableSeats(1)).thenReturn(Collections.emptyList());
 
-        mockMvc.perform(get("/screening/find-screenings/2022-10-19T02:30"))
+        mockMvc.perform(get("/seat/get-seats/1"))
                 .andExpect(status().isNoContent());
     }
 
     @Test
     public void return200OnValidRequest() throws Exception {
-        LocalDateTime input = LocalDateTime.of(2022,10,19,2,30);
-        Screening testScreening = new Screening(1,
-                new Movie("bobo", 3600),
+        long input = 1L;
+        Seat testSeat = new Seat(
                 1,
-                input
-                );
+                1,
+                1,
+                1,
+                1,
+                false,
+                SeatStatus.AVAILABLE
+        );
 
-        when(screeningService.findScreenings(input))
-                .thenReturn(List.of(testScreening));
+        when(seatService.getAvailableSeats(input))
+                .thenReturn(List.of(testSeat));
 
-        mockMvc.perform(get("/screening/find-screenings/2022-10-19T02:30"))
+        mockMvc.perform(get("/seat/get-seats/1"))
                 .andExpect(status().isOk());
     }
 
     @Test
     public void handleInvalidInput() throws Exception{
 
-
-        mockMvc.perform(get("/screening/find-screenings/7"))
+        mockMvc.perform(get("/seat/get-seats/absdf"))
                 .andExpect(status().isBadRequest());
 
     }
 }
+
+
+
+

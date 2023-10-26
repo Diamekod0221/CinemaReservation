@@ -6,6 +6,7 @@ import com.ramcel.cinema.reservation.db.entity.ScreeningEntity;
 import com.ramcel.cinema.reservation.db.repositories.ScreeningRepository;
 import com.ramcel.cinema.reservation.functionalities.screening.Movie;
 import com.ramcel.cinema.reservation.functionalities.screening.Screening;
+import com.ramcel.cinema.reservation.functionalities.screening.ScreeningService;
 import com.ramcel.cinema.reservation.functionalities.screening.ScreeningServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,7 +26,7 @@ import static org.mockito.Mockito.when;
 public class ScreeningServiceTest{
 
     @Autowired
-    private ScreeningServiceImpl screeningService;
+    private ScreeningService screeningService;
 
     @MockBean
     private ScreeningRepository screeningRepository;

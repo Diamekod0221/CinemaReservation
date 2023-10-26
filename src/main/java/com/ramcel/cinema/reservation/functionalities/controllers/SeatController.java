@@ -17,7 +17,7 @@ public class SeatController {
     @Autowired
     private SeatService seatService;
 
-    @GetMapping(name = "/get-seats/{id}")
+    @GetMapping("/get-seats/{screeningId}")
     public ResponseEntity<List<Seat>> getAvailableSeatsByScreening(@Valid @PathVariable long screeningId) {
         List<Seat> resultList = seatService.getAvailableSeats(screeningId);
         return getResponse(resultList);
@@ -27,7 +27,7 @@ public class SeatController {
         return Optional.of(resultList)
                 .filter(list -> !list.isEmpty())
                 .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+                .orElse(ResponseEntity.noContent().build());
     }
 }
 

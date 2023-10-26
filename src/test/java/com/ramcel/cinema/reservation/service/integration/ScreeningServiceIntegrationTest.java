@@ -1,4 +1,4 @@
-package com.ramcel.cinema.reservation.service;
+package com.ramcel.cinema.reservation.service.integration;
 
 
 import com.ramcel.cinema.reservation.db.repositories.ScreeningRepository;

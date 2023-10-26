@@ -9,6 +9,7 @@ import com.ramcel.cinema.reservation.functionalities.exception.IllegalTicketExce
 import com.ramcel.cinema.reservation.functionalities.reservation.Reservation;
 import com.ramcel.cinema.reservation.functionalities.ticket.validators.TicketValidator;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class TicketServiceImpl implements TicketService {
 
     @Autowired
@@ -56,8 +58,6 @@ public class TicketServiceImpl implements TicketService {
                 throw new IllegalTicketException("Ticket list" + ticketList + " is not valid.");
             }
     }
-
-
 
     private Reservation handleReservation(List<Ticket> ticketList) throws IllegalReservationException {
         ticketList.forEach(this::manageEntitiesState);

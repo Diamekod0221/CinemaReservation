@@ -23,5 +23,11 @@ public class RoomRowEntity extends BaseEntity{
         this.seatsInRow = seatsInRow;
     }
 
+    public RoomRowEntity(long id, int seatsInRow, RoomEntity cinemaRoom){
+        super(id);
+        this.cinemaRoom = cinemaRoom;
+        this.seatsInRow = seatsInRow;
+    }
+
 
 }

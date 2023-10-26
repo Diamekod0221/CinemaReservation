@@ -4,6 +4,7 @@ import com.ramcel.cinema.reservation.functionalities.exception.IllegalSeatExcept
 import com.ramcel.cinema.reservation.functionalities.seat.Seat;
 import com.ramcel.cinema.reservation.functionalities.seat.SeatStatus;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Table(name = "seats")
 @EqualsAndHashCode(callSuper = true)
+@AllArgsConstructor
 @NoArgsConstructor
 public class SeatEntity extends BaseEntity {
 
