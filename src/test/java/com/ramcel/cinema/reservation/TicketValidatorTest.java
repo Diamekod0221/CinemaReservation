@@ -2,10 +2,8 @@ package com.ramcel.cinema.reservation;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-import com.ramcel.cinema.reservation.db.entity.SeatEntity;
 import com.ramcel.cinema.reservation.db.repositories.SeatRepository;
 import com.ramcel.cinema.reservation.functionalities.exception.IllegalReservationException;
-import com.ramcel.cinema.reservation.functionalities.seat.SeatStatus;
 import com.ramcel.cinema.reservation.functionalities.ticket.Ticket;
 import com.ramcel.cinema.reservation.functionalities.ticket.TicketType;
 import com.ramcel.cinema.reservation.functionalities.ticket.validators.TicketValidator;
@@ -30,7 +28,7 @@ public class TicketValidatorTest {
         ticketValidator = new TicketValidator(seatRepository);
 
         when(seatRepository.findById(anyLong())).thenReturn(Optional.of(new SeatEntityMockValid()));
-        when(seatRepository.findSeatsByRoomRowAndScreeningID(anyLong(), anyLong())).thenReturn(List.of(new SeatEntityMockValid()));
+        when(seatRepository.findSeatsByRoomRowIdAndScreeningID(anyLong(), anyLong())).thenReturn(List.of(new SeatEntityMockValid()));
     }
 
     @Test

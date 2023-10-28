@@ -3,7 +3,8 @@ package com.ramcel.cinema.reservation.functionalities.ticket.validators;
 import com.ramcel.cinema.reservation.db.entity.SeatEntity;
 import com.ramcel.cinema.reservation.db.repositories.SeatRepository;
 import com.ramcel.cinema.reservation.functionalities.exception.IllegalReservationException;
-import com.ramcel.cinema.reservation.functionalities.seat.Seat;
+import com.ramcel.cinema.reservation.functionalities.exception.IllegalSeatException;
+import com.ramcel.cinema.reservation.functionalities.exception.IllegalTicketException;
 import com.ramcel.cinema.reservation.functionalities.seat.SeatStatus;
 import com.ramcel.cinema.reservation.functionalities.ticket.Ticket;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.function.IntPredicate;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Component
 public class TicketValidator {
@@ -36,28 +34,67 @@ public class TicketValidator {
             throw new IllegalReservationException("Multiple screenings chosen");
         }
         else {
+            return performValidation(ticketList);
+        }
+    }
+
+    private boolean performValidation(List<Ticket> ticketList) {
+        try {
             boolean hasBasicParamsValid = passedBasicValidation(ticketList);
 
             boolean hasValidRows = validateRowPosition(ticketList);
 
             return hasValidRows && hasBasicParamsValid;
         }
+        catch (IllegalTicketException e){
+            throw new IllegalReservationException();
+        }
     }
 
-    private boolean validateRowPosition(List<Ticket> ticketList) {
+    private boolean validateRowPosition(List<Ticket> ticketList) throws IllegalTicketException {
 
+        try{
+            return performRowValidation(ticketList);
+        }
+        catch (IllegalSeatException e){
+            throw new IllegalTicketException();
+        }
+    }
+
+    private boolean performRowValidation(List<Ticket> ticketList) {
+        Map<Long, List<SeatEntity>> seatsByRowMap = computeSeatsByRowMap(ticketList);
+        reserveSeatsFromList(ticketList, seatsByRowMap);
+
+        return canBookSeatWithoutHoles(seatsByRowMap);
+    }
+
+    private static void reserveSeatsFromList(List<Ticket> ticketList, Map<Long, List<SeatEntity>> seatsByRowMap) {
+        Set<Long> seatsToBeBookedIds = ticketList.stream().map(Ticket::getSeatId).collect(Collectors.toSet());
+
+        for(List<SeatEntity> seatsInRow: seatsByRowMap.values()){
+            seatsInRow.stream().filter(v -> seatsToBeBookedIds.contains(v.getId())).forEach(SeatEntity::reserve);
+        }
+    }
+
+    private Map<Long, List<SeatEntity>> computeSeatsByRowMap(List<Ticket> ticketList) {
         Map<Long, List<SeatEntity>> bookedSeatsByRowMap = new HashMap<>();
         for(Ticket ticket: ticketList){
             SeatEntity currentSeat = fetchSeatEntity(ticket);
+            if(currentSeat.isOccupied()){
+                throw new IllegalSeatException();
+            }
 
-            Long rowId = currentSeat.getRoomRow().getId();
-            Long currentScreening = ticket.getScreeningId();
-            List<SeatEntity> bookedSeatsInRow = getBookedSeatsInRow(rowId, currentScreening);
-
-            bookedSeatsByRowMap.computeIfAbsent(rowId, v ->  bookedSeatsInRow).add(currentSeat);
+            addRowToMap(ticket, currentSeat, bookedSeatsByRowMap);
         }
+        return bookedSeatsByRowMap;
+    }
 
-        return canBookSeatWithoutHoles(bookedSeatsByRowMap);
+    private void addRowToMap(Ticket ticket, SeatEntity currentSeat, Map<Long, List<SeatEntity>> bookedSeatsByRowMap) {
+        Long rowId = currentSeat.getRoomRow().getId();
+        Long currentScreening = ticket.getScreeningId();
+        List<SeatEntity> seatsInRow = getSeatsInRow(rowId, currentScreening);
+
+        bookedSeatsByRowMap.computeIfAbsent(rowId, v ->  seatsInRow);
     }
 
     private static boolean canBookSeatWithoutHoles(Map<Long, List<SeatEntity>> bookedSeatsByRowMap) {
@@ -70,6 +107,11 @@ public class TicketValidator {
     }
 
     private static boolean hasNoHoles(List<SeatEntity> seats) {
+        if(seats.size() == 3){
+            if(hasAHole(seats)){
+                return false;
+            }
+        }
         for (int i = 0; i < seats.size() - 2; i++) {
             SeatEntity seat1 = seats.get(i);
             SeatEntity seat2 = seats.get(i + 1);
@@ -82,6 +124,10 @@ public class TicketValidator {
             }
         }
         return true;
+    }
+
+    private static boolean hasAHole(List<SeatEntity> seats) {
+        return seats.get(0).getStatus() != SeatStatus.AVAILABLE && seats.get(1).getStatus() == SeatStatus.AVAILABLE && seats.get(2).getStatus() != SeatStatus.AVAILABLE;
     }
 
 
@@ -99,20 +145,18 @@ public class TicketValidator {
                 .orElse(false);
     }
 
-    private List<SeatEntity> getBookedSeatsInRow(Long rowId, Long currentScreening) {
-        return seatRepository.findSeatsByRoomRowAndScreeningID(rowId, currentScreening)
-                .stream().filter(SeatEntity::isOccupied).collect(Collectors.toList());
+    private List<SeatEntity> getSeatsInRow(Long rowId, Long currentScreening) {
+        return new ArrayList<>(seatRepository.findSeatsByRoomRowIdAndScreeningID(rowId, currentScreening));
     }
 
     private boolean hasMultipleScreenings(List<Ticket> ticketList){
-        return ticketList.stream().mapToLong(Ticket::getScreeningId).distinct().sum() > 1;
+        return ticketList.stream().mapToLong(Ticket::getScreeningId).distinct().count() > 1;
     }
 
 
-    private SeatEntity fetchSeatEntity(Ticket ticket) {
+    private SeatEntity fetchSeatEntity(Ticket ticket) throws IllegalSeatException {
         return seatRepository.findById(ticket.getSeatId())
-                .filter(s -> !s.isOccupied())
-                .orElseThrow(IllegalStateException::new);
+                .orElseThrow(IllegalSeatException::new);
     }
 
 

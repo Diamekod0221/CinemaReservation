@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Service
@@ -26,7 +27,6 @@ public class TicketServiceImpl implements TicketService {
 
     @Autowired
     private TicketMapper mapper;
-
 
     @Autowired
     private TicketValidator validator;
@@ -44,7 +44,7 @@ public class TicketServiceImpl implements TicketService {
     private Reservation handleReservation(Ticket ticket) throws IllegalReservationException{
         manageEntitiesState(ticket);
 
-        LocalDateTime expirationDate = LocalDateTime.now().plusDays(1);
+        LocalDateTime expirationDate = LocalDateTime.now().plusDays(1).truncatedTo(ChronoUnit.MINUTES);
         BigDecimal price = ticket.getType().getPrice();
 
         return new Reservation(List.of(ticket), price, expirationDate);
@@ -66,7 +66,7 @@ public class TicketServiceImpl implements TicketService {
                 .map(t -> t.getType().getPrice())
                 .reduce(BigDecimal::add).orElseThrow(IllegalArgumentException::new);
 
-        LocalDateTime expirationDate = LocalDateTime.now().plusDays(1);
+        LocalDateTime expirationDate = LocalDateTime.now().plusDays(1).truncatedTo(ChronoUnit.MINUTES);
 
         return new Reservation(ticketList, totalPrice, expirationDate);
     }
