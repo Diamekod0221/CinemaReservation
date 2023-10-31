@@ -34,24 +34,25 @@ public class TicketValidator {
             throw new IllegalReservationException("Multiple screenings chosen");
         }
         else {
-            return performValidation(ticketList);
+            try{
+                return performValidation(ticketList);}
+             catch (IllegalTicketException e){
+                throw new IllegalReservationException(e.getMessage() + " - ticket is not valid.");
+            }
         }
+
     }
 
     private boolean hasMultipleScreenings(List<Ticket> ticketList){
         return ticketList.stream().mapToLong(Ticket::getScreeningId).distinct().count() > 1;
     }
 
-    private boolean performValidation(List<Ticket> ticketList) {
-        try {
+    private boolean performValidation(List<Ticket> ticketList) throws IllegalTicketException{
             boolean hasBasicParamsValid = passedBasicValidation(ticketList);
             validateRowPosition(ticketList);
 
             return hasBasicParamsValid;
-        }
-        catch (IllegalTicketException e){
-            throw new IllegalReservationException(e.getMessage());
-        }
+
     }
 
     private boolean passedBasicValidation(Ticket ticket){

@@ -131,7 +131,7 @@ public class TicketServiceIntegrationTest {
 
         List<Ticket> input = List.of(ticket1);
 
-        assertThrows(IllegalTicketException.class, () -> ticketService.bookTicket(input));
+        assertThrows(IllegalReservationException.class, () -> ticketService.bookTicket(input));
     }
 
 

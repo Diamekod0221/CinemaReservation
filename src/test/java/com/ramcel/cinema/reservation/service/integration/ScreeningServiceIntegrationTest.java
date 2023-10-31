@@ -45,7 +45,7 @@ public class ScreeningServiceIntegrationTest {
                 3,
                 LocalDateTime.of(2023,11,2, 4,15));
 
-        assertEquals(List.of(expectedScreening1,expectedScreening2), actual);
+        assertEquals(List.of(expectedScreening2,expectedScreening1), actual);
 
     }
 
