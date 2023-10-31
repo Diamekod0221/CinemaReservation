@@ -1,13 +1,12 @@
 package com.ramcel.cinema.reservation.db.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 
 @Entity
-@Data
+@Getter
+@Setter
 @Table(name = "room_rows")
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor

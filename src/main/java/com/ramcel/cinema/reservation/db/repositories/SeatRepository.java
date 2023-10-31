@@ -11,8 +11,8 @@ import java.util.List;
 @Repository
 public interface SeatRepository extends JpaRepository<SeatEntity, Long> {
 
-    @Query("SELECT s FROM SeatEntity s WHERE s.screening = :screeningId")
-    List<SeatEntity> findSeatByScreening(
+    @Query("SELECT s FROM SeatEntity s WHERE s.screening.id = :screeningId")
+    List<SeatEntity> findSeatByScreeningId(
             @Param("screeningId") Long screeningId);
 
     @Query("SELECT s FROM SeatEntity s WHERE s.roomRow.id = :roomRow AND s.screening.id = :screeningId")

@@ -18,7 +18,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @Slf4j
-@Sql(scripts = {"/import_movies.sql", "/import_rooms.sql", "/import_screenings.sql"})
+@Sql(scripts = {"/import_movies.sql", "/import_rooms.sql", "/import_screenings.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(scripts = {"/delete_test_data.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 public class ScreeningServiceIntegrationTest {
 
 
@@ -30,19 +31,19 @@ public class ScreeningServiceIntegrationTest {
 
     @Test
     public void findValidScreeningDBDate(){
-        LocalDateTime input = LocalDateTime.of(2023, 10,10, 3, 0);
+        LocalDateTime input = LocalDateTime.of(2023, 11,2, 2, 0);
 
         List<Screening> actual = screeningService.findScreenings(input);
 
         Screening expectedScreening1 = new Screening(1,
                 new Movie("Star Wars", 3600),
                 1,
-                LocalDateTime.of(2023,10,10, 4,15));
+                LocalDateTime.of(2023,11,2, 4,15));
 
-        Screening expectedScreening2 = new Screening(2,
+        Screening expectedScreening2 = new Screening(7,
                 new Movie("Captain Hook", 5400),
-                2,
-                LocalDateTime.of(2023,10,10, 6,15));
+                3,
+                LocalDateTime.of(2023,11,2, 4,15));
 
         assertEquals(List.of(expectedScreening1,expectedScreening2), actual);
 
@@ -50,7 +51,7 @@ public class ScreeningServiceIntegrationTest {
 
     @Test
     public void findValidScreeningDBDateMovie(){
-        LocalDateTime input = LocalDateTime.of(2023, 10,10, 3, 0);
+        LocalDateTime input = LocalDateTime.of(2023, 11,2, 2, 0);
         Movie testMovie = new Movie("Star Wars", 3600);
 
         List<Screening> actual = screeningService.findScreenings(testMovie, input);
@@ -58,7 +59,7 @@ public class ScreeningServiceIntegrationTest {
         Screening expectedScreening1 = new Screening(1,
                 testMovie,
                 1,
-                LocalDateTime.of(2023,10,10, 4,15));
+                LocalDateTime.of(2023,11,2, 4,15));
 
         assertEquals(List.of(expectedScreening1), actual);
 

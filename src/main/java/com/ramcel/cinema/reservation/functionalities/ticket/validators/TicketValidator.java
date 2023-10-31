@@ -38,55 +38,81 @@ public class TicketValidator {
         }
     }
 
+    private boolean hasMultipleScreenings(List<Ticket> ticketList){
+        return ticketList.stream().mapToLong(Ticket::getScreeningId).distinct().count() > 1;
+    }
+
     private boolean performValidation(List<Ticket> ticketList) {
         try {
             boolean hasBasicParamsValid = passedBasicValidation(ticketList);
+            validateRowPosition(ticketList);
 
-            boolean hasValidRows = validateRowPosition(ticketList);
-
-            return hasValidRows && hasBasicParamsValid;
+            return hasBasicParamsValid;
         }
         catch (IllegalTicketException e){
-            throw new IllegalReservationException();
+            throw new IllegalReservationException(e.getMessage());
         }
     }
 
-    private boolean validateRowPosition(List<Ticket> ticketList) throws IllegalTicketException {
+    private boolean passedBasicValidation(Ticket ticket){
+        boolean hasASeat = (ticket.getSeatId() > 0);
+        boolean hasValidHolder = HolderValidator.validateHolder(ticket);
+        boolean isMoreThan15MinsAway = ticket.getScreeningDate().isAfter(LocalDateTime.now().plusMinutes(15));
+        return  hasASeat && hasValidHolder && isMoreThan15MinsAway;
+    }
+
+    private Boolean passedBasicValidation(List<Ticket> ticketList) {
+        return ticketList.stream()
+                .map(this::passedBasicValidation)
+                .reduce((t, k) -> t && k)
+                .orElseThrow(IllegalTicketException::new);
+    }
+
+    private void validateRowPosition(List<Ticket> ticketList) throws IllegalTicketException {
 
         try{
-            return performRowValidation(ticketList);
+            boolean isValid = performRowValidation(ticketList);
+            if(!isValid){
+                throw new IllegalTicketException("Booking tickets from this list would cause holes in the seat row - illegal!");
+            }
         }
         catch (IllegalSeatException e){
-            throw new IllegalTicketException();
+            throw new IllegalTicketException(e.getMessage());
         }
     }
 
-    private boolean performRowValidation(List<Ticket> ticketList) {
+    private boolean performRowValidation(List<Ticket> ticketList) throws IllegalSeatException{
         Map<Long, List<SeatEntity>> seatsByRowMap = computeSeatsByRowMap(ticketList);
         reserveSeatsFromList(ticketList, seatsByRowMap);
 
         return canBookSeatWithoutHoles(seatsByRowMap);
+
     }
 
-    private static void reserveSeatsFromList(List<Ticket> ticketList, Map<Long, List<SeatEntity>> seatsByRowMap) {
-        Set<Long> seatsToBeBookedIds = ticketList.stream().map(Ticket::getSeatId).collect(Collectors.toSet());
-
-        for(List<SeatEntity> seatsInRow: seatsByRowMap.values()){
-            seatsInRow.stream().filter(v -> seatsToBeBookedIds.contains(v.getId())).forEach(SeatEntity::reserve);
-        }
-    }
-
-    private Map<Long, List<SeatEntity>> computeSeatsByRowMap(List<Ticket> ticketList) {
+    private Map<Long, List<SeatEntity>> computeSeatsByRowMap(List<Ticket> ticketList) throws IllegalSeatException{
         Map<Long, List<SeatEntity>> bookedSeatsByRowMap = new HashMap<>();
         for(Ticket ticket: ticketList){
             SeatEntity currentSeat = fetchSeatEntity(ticket);
-            if(currentSeat.isOccupied()){
-                throw new IllegalSeatException();
-            }
+            checkEntityTicketConsistency(ticket, currentSeat);
 
             addRowToMap(ticket, currentSeat, bookedSeatsByRowMap);
         }
         return bookedSeatsByRowMap;
+    }
+
+    private SeatEntity fetchSeatEntity(Ticket ticket) throws IllegalSeatException {
+        return seatRepository.findById(ticket.getSeatId())
+                .orElseThrow(IllegalSeatException::new);
+    }
+
+    private static void checkEntityTicketConsistency(Ticket ticket, SeatEntity currentSeat) throws IllegalSeatException{
+        if(currentSeat.isOccupied() || haveNonMatchingScreenings(ticket, currentSeat)){
+            throw new IllegalSeatException("Seat can't be reserved - ticket data not in line with db.");
+        }
+    }
+
+    private static boolean haveNonMatchingScreenings(Ticket ticket, SeatEntity currentSeat) {
+        return currentSeat.getScreening().getId() != ticket.getScreeningId();
     }
 
     private void addRowToMap(Ticket ticket, SeatEntity currentSeat, Map<Long, List<SeatEntity>> bookedSeatsByRowMap) {
@@ -96,6 +122,19 @@ public class TicketValidator {
 
         bookedSeatsByRowMap.computeIfAbsent(rowId, v ->  seatsInRow);
     }
+
+    private List<SeatEntity> getSeatsInRow(Long rowId, Long currentScreening) {
+        return new ArrayList<>(seatRepository.findSeatsByRoomRowIdAndScreeningID(rowId, currentScreening));
+    }
+
+    private static void reserveSeatsFromList(List<Ticket> ticketList, Map<Long, List<SeatEntity>> seatsByRowMap) throws IllegalTicketException{
+        Set<Long> seatsToBeBookedIds = ticketList.stream().map(Ticket::getSeatId).collect(Collectors.toSet());
+
+        for(List<SeatEntity> seatsInRow: seatsByRowMap.values()){
+            seatsInRow.stream().filter(v -> seatsToBeBookedIds.contains(v.getId())).forEach(SeatEntity::reserve);
+        }
+    }
+
 
     private static boolean canBookSeatWithoutHoles(Map<Long, List<SeatEntity>> bookedSeatsByRowMap) {
         return bookedSeatsByRowMap.values()
@@ -131,33 +170,12 @@ public class TicketValidator {
     }
 
 
-    private boolean passedBasicValidation(Ticket ticket){
-        boolean hasASeat = (ticket.getSeatId() > 0);
-        boolean hasValidHolder = HolderValidator.validateHolder(ticket);
-        boolean isMoreThan15MinsAway = ticket.getScreeningDate().isAfter(LocalDateTime.now().plusMinutes(15));
-        return  hasASeat && hasValidHolder && isMoreThan15MinsAway;
-    }
-
-    private Boolean passedBasicValidation(List<Ticket> ticketList) {
-        return ticketList.stream()
-                .map(this::passedBasicValidation)
-                .reduce((t, k) -> t && k)
-                .orElse(false);
-    }
-
-    private List<SeatEntity> getSeatsInRow(Long rowId, Long currentScreening) {
-        return new ArrayList<>(seatRepository.findSeatsByRoomRowIdAndScreeningID(rowId, currentScreening));
-    }
-
-    private boolean hasMultipleScreenings(List<Ticket> ticketList){
-        return ticketList.stream().mapToLong(Ticket::getScreeningId).distinct().count() > 1;
-    }
 
 
-    private SeatEntity fetchSeatEntity(Ticket ticket) throws IllegalSeatException {
-        return seatRepository.findById(ticket.getSeatId())
-                .orElseThrow(IllegalSeatException::new);
-    }
+
+
+
+
 
 
 

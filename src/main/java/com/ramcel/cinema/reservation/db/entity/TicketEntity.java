@@ -35,7 +35,7 @@ public class TicketEntity extends BaseEntity{
 
     private TicketType type;
 
-    //pass null if the ticket is not reserved but bought (no
+    //pass null if the ticket is not reserved but bought
     @Column(name = "reservation_expiration", columnDefinition = "TIMESTAMP")
     private LocalDateTime expirationDate;
 

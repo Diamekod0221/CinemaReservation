@@ -33,7 +33,7 @@ public class SeatControllerTest {
 
     @Test
     public void return204OnFullScreening() throws Exception {
-        when(seatService.getAvailableSeats(1)).thenReturn(Collections.emptyList());
+        when(seatService.getAvailableSeats(1L)).thenReturn(Collections.emptyList());
 
         mockMvc.perform(get("/seat/get-seats/1"))
                 .andExpect(status().isNoContent());

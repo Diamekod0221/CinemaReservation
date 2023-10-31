@@ -1,25 +1,16 @@
-package com.ramcel.cinema.reservation.service;
+package com.ramcel.cinema.reservation.service.unit;
 
-import com.ramcel.cinema.reservation.db.entity.MovieEntity;
-import com.ramcel.cinema.reservation.db.entity.RoomEntity;
-import com.ramcel.cinema.reservation.db.entity.ScreeningEntity;
 import com.ramcel.cinema.reservation.db.entity.SeatEntity;
-import com.ramcel.cinema.reservation.db.repositories.ScreeningRepository;
 import com.ramcel.cinema.reservation.db.repositories.SeatRepository;
-import com.ramcel.cinema.reservation.functionalities.screening.Screening;
-import com.ramcel.cinema.reservation.functionalities.screening.ScreeningServiceImpl;
 import com.ramcel.cinema.reservation.functionalities.seat.Seat;
 import com.ramcel.cinema.reservation.functionalities.seat.SeatService;
-import com.ramcel.cinema.reservation.functionalities.seat.SeatServiceImpl;
 import com.ramcel.cinema.reservation.functionalities.seat.SeatStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -49,7 +40,7 @@ public class SeatServiceTest {
 
     @Test
     public void findValidSeatMock(){
-        when(seatRepository.findSeatByScreening(1L))
+        when(seatRepository.findSeatByScreeningId(1L))
                 .thenReturn(List.of(testSeat));
 
         when(testSeat.mapToSeat()).thenReturn(
