@@ -47,7 +47,7 @@ public class SeatServiceTest {
 
         when(testSeat.mapToSeat()).thenReturn(
                 Seat.builder()
-                        .seatId(1) // You can set appropriate values here
+                        .seatId(1)
                         .roomId(2)
                         .roomRowId(3)
                         .seatNumber(4)

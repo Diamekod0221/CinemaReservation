@@ -55,7 +55,6 @@ public class ScreeningControllerTest {
     @Test
     public void handleInvalidInput() throws Exception{
 
-
         mockMvc.perform(get("/screening/find-screenings/7"))
                 .andExpect(status().isBadRequest());
 
