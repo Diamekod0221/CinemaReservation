@@ -1,4 +1,4 @@
-package com.ramcel.cinema.reservation.service;
+package com.ramcel.cinema.reservation.service.unit;
 
 import com.ramcel.cinema.reservation.db.entity.MovieEntity;
 import com.ramcel.cinema.reservation.db.entity.RoomEntity;

@@ -1,0 +1,8 @@
+[{
+  "name":"John",
+  "surname":"Doe",
+  "screeningId":1,
+  "screeningDate":"2023-11-02 04:15:00",
+  "seatId":1,
+  "type":"ADULT"
+}]

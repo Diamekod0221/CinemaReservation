@@ -2,15 +2,14 @@ package com.ramcel.cinema.reservation.db.entity;
 
 import com.ramcel.cinema.reservation.functionalities.screening.Movie;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.Duration;
 
 @Entity
 @Table(name = "movies")
-@Data
+@Getter
+@Setter
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 public class MovieEntity extends BaseEntity {

@@ -11,6 +11,7 @@ import com.ramcel.cinema.reservation.functionalities.ticket.validators.TicketVal
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -84,6 +85,13 @@ public class TicketServiceImpl implements TicketService {
         if (seat != null) {
             seat.reserve();
         }
+    }
+
+    @Scheduled(cron = "0 0 2 * * *") // Runs every day at 2:00 AM
+    public void deleteExpiredReservations() {
+        LocalDateTime now = LocalDateTime.now();
+        List<TicketEntity> expiredReservations = ticketRepository.findByExpirationDateBefore(now);
+        ticketRepository.deleteAll(expiredReservations);
     }
 
 

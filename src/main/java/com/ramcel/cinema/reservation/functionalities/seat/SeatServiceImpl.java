@@ -13,7 +13,7 @@ public class SeatServiceImpl implements SeatService{
     @Autowired
     private SeatRepository seatRepository;
     @Override
-    public List<Seat> getAvailableSeats(long screeningId) {
-        return seatRepository.findSeatByScreening(screeningId).stream().map(SeatEntity::mapToSeat).toList();
+    public List<Seat> getAvailableSeats(Long screeningId) {
+        return seatRepository.findSeatByScreeningId(screeningId).stream().map(SeatEntity::mapToSeat).toList();
     }
 }

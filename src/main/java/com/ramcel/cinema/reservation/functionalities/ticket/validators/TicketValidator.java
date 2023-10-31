@@ -80,13 +80,21 @@ public class TicketValidator {
         Map<Long, List<SeatEntity>> bookedSeatsByRowMap = new HashMap<>();
         for(Ticket ticket: ticketList){
             SeatEntity currentSeat = fetchSeatEntity(ticket);
-            if(currentSeat.isOccupied()){
-                throw new IllegalSeatException();
-            }
+            checkEntityTicketConsistency(ticket, currentSeat);
 
             addRowToMap(ticket, currentSeat, bookedSeatsByRowMap);
         }
         return bookedSeatsByRowMap;
+    }
+
+    private static void checkEntityTicketConsistency(Ticket ticket, SeatEntity currentSeat) {
+        if(currentSeat.isOccupied() || haveNonMatchingScreenings(ticket, currentSeat)){
+            throw new IllegalSeatException("Seat can't be reserved - ticket data not in line with db.");
+        }
+    }
+
+    private static boolean haveNonMatchingScreenings(Ticket ticket, SeatEntity currentSeat) {
+        return currentSeat.getScreening().getId() != ticket.getScreeningId();
     }
 
     private void addRowToMap(Ticket ticket, SeatEntity currentSeat, Map<Long, List<SeatEntity>> bookedSeatsByRowMap) {

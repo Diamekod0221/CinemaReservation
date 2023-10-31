@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -21,13 +22,14 @@ public class ScreeningServiceImpl implements ScreeningService{
         LocalDateTime searchStartDate = dateTime.minusMinutes(30);
         LocalDateTime searchEndDate = dateTime.plusHours(4);
 
+        List<Screening> foundScreenings = screeningsListInPeriod(searchStartDate, searchEndDate);
 
-        return screeningsListInPeriod(searchStartDate, searchEndDate);
+        return sortScreeningsByMovieNameAndRunTime(foundScreenings);
     }
 
     private List<Screening> screeningsListInPeriod(LocalDateTime searchStartDate, LocalDateTime searchEndDate) {
-        return screeningRepository.findScreeningsInPeriod(searchStartDate, searchEndDate).stream()
-                .peek(v -> log.atDebug().log("Fetched: " + v + "for date: " + searchStartDate))
+        return screeningRepository.findScreeningsInPeriod(searchStartDate, searchEndDate)
+                .stream().peek(v -> log.atDebug().log("Fetched: " + v.getId()))
                 .map(ScreeningEntity::mapToScreening).toList();
     }
 
@@ -36,5 +38,13 @@ public class ScreeningServiceImpl implements ScreeningService{
         return findScreenings(dateTime).stream()
                 .filter(s -> s.movie().equals(movie))
                 .toList();
+    }
+
+    public static List<Screening> sortScreeningsByMovieNameAndRunTime(List<Screening> screenings) {
+        Comparator<Screening> comparator = Comparator
+                .comparing((Screening screening) -> screening.movie().name())
+                .thenComparingLong(screening -> screening.movie().runTimeInSeconds());
+
+        return List.copyOf(screenings).stream().sorted(comparator).toList();
     }
 }
