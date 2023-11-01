@@ -6,7 +6,7 @@ BASE_URL="http://localhost:8080"
 # Define the values to be used in the requests
 DATES=("2023-11-04T04:15:00" "2023-11-10T11:00:00")
 SCREENING_IDS=(1 3)
-POST_DATA_FILES=("./json_ticket1" "./json_ticket2")
+POST_DATA_FILES=("./post_jsons/json_ticket1.json" "./post_jsons/json_ticket2.json")
 
 # Customize the request headers (if needed)
 HEADERS="-H 'Content-Type: application/json'"
