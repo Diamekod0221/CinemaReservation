@@ -87,14 +87,4 @@ public class TicketServiceImpl implements TicketService {
         }
     }
 
-    @Scheduled(cron = "0 0 2 * * *") // Runs every day at 2:00 AM
-    public void deleteExpiredReservations() {
-        LocalDateTime now = LocalDateTime.now();
-        List<TicketEntity> expiredReservations = ticketRepository.findByExpirationDateBefore(now);
-        ticketRepository.deleteAll(expiredReservations);
-    }
-
-
-
-
 }
