@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @Slf4j
-@Sql(scripts = {"/import_movies.sql", "/import_rooms.sql", "/import_screenings.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(scripts = {"/sql/import_movies.sql", "/sql/import_rooms.sql", "/sql/import_screenings.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @Sql(scripts = {"/delete_test_data.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 public class ScreeningServiceIntegrationTest {
 

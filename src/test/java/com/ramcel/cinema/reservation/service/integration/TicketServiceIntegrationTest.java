@@ -3,7 +3,6 @@ package com.ramcel.cinema.reservation.service.integration;
 import com.ramcel.cinema.reservation.db.repositories.SeatRepository;
 import com.ramcel.cinema.reservation.db.repositories.TicketRepository;
 import com.ramcel.cinema.reservation.functionalities.exception.IllegalReservationException;
-import com.ramcel.cinema.reservation.functionalities.exception.IllegalTicketException;
 import com.ramcel.cinema.reservation.functionalities.reservation.Reservation;
 import com.ramcel.cinema.reservation.functionalities.ticket.*;
 import com.ramcel.cinema.reservation.functionalities.ticket.validators.TicketValidator;
@@ -22,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Slf4j
-@Sql(scripts = {"/import_movies.sql", "/import_rooms.sql", "/import_screenings.sql", "/import_seats.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(scripts = {"/sql/import_movies.sql", "/sql/import_rooms.sql", "/sql/import_screenings.sql", "/sql/import_seats.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @Sql(scripts = {"/delete_test_data.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 public class TicketServiceIntegrationTest {
 
