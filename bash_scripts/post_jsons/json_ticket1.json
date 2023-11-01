@@ -1,0 +1,18 @@
+[{
+  "name":"John",
+  "surname":"Doe",
+  "screeningId":1,
+  "screeningDate":"2023-11-04T04:15:00",
+  "seatId":1,
+  "type":"ADULT"
+},
+  {
+    "name":"Andrzej",
+    "surname":"Brzęczyszczykiewicz",
+    "screeningId":1,
+    "screeningDate":"2023-11-04T04:15:00",
+    "seatId":2,
+    "type":"CHILD"
+  }
+]
+

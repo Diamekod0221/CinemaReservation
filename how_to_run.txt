@@ -1,0 +1,17 @@
+To run the app:
+
+Please install docker, java 21, maven.
+
+Go to /bash_scripts.
+First run the db_setup.bash script - it should start a docker container with mysql 8.0 running. The container is
+scheduled for 3306 port (default docker). Then the script will attempt to populate the db with initial tables and values.
+If everything is ok, "All SQL scripts executed successfully." Should be printed.
+
+If the docker container runs properly and the db is filled, run (consider a detached terminal)
+mvn spring-boot::run
+in the repo directory, it should start the app on localhost:8080.
+
+For a live use case, please run app_preview.bash - it will run two sequences of how the app could be used. If everything
+is ok, the respective curl requests and responses should appear, ending with "All requests completed."
+
+Feel free to fiddle around with the app, hopefully you break something :)
