@@ -9,7 +9,7 @@ SCREENING_IDS=(1 3)
 POST_DATA_FILES=("./post_jsons/json_ticket1.json" "./post_jsons/json_ticket2.json")
 
 # Customize the request headers (if needed)
-HEADERS="-H 'Content-Type: application/json'"
+HEADERS="-H 'Content-Type:application/json'"
 
 # Loop through the values and make the corresponding requests
 for ((i=0; i<${#DATES[@]}; i++)); do
