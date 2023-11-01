@@ -11,7 +11,7 @@ SQL_SCRIPTS_DIR="../sql_scripts"
 # Check if the Docker container is already running
 if [ ! "$(docker ps -q -f name=$CONTAINER_NAME)" ]; then
     # Run the MySQL Docker container if it's not already running
-    docker run -d --name "$CONTAINER_NAME" -e MYSQL_ROOT_PASSWORD="$DB_PASSWORD" -e MYSQL_DATABASE="$DB_NAME" -e MYSQL_USER="$DB_USER" -e MYSQL_PASSWORD="$DB_PASSWORD" -p 3306:3306 mysql:5.7
+    docker run -d --name "$CONTAINER_NAME" -e MYSQL_ROOT_PASSWORD="$DB_PASSWORD" -e MYSQL_DATABASE="$DB_NAME" -e MYSQL_USER="$DB_USER" -e MYSQL_PASSWORD="$DB_PASSWORD" -p 3306:3306 mysql:8.0
 
     # Wait for the MySQL container to be up and running (adjust the timeout as needed)
     timeout=60
