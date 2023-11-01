@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Slf4j
-@Sql(scripts = {"/sql/import_movies.sql", "/sql/import_rooms.sql", "/sql/import_screenings.sql", "/sql/import_seats.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(scripts = {"/sql_scripts/import_movies.sql", "/sql_scripts/import_rooms.sql", "/sql_scripts/import_screenings.sql", "/sql_scripts/import_seats.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @Sql(scripts = {"/delete_test_data.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 public class TicketServiceIntegrationTest {
 

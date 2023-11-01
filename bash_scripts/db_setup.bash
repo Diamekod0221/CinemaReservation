@@ -6,7 +6,7 @@ DB_USER="cinema-app"
 DB_PASSWORD="EPqKjMPYhwJIeWKVRVQ7"
 DB_NAME="cinema"
 
-SQL_SCRIPTS_DIR="src/main/resources/sql"
+SQL_SCRIPTS_DIR="../sql_scripts"
 
 # Check if the Docker container is already running
 if [ ! "$(docker ps -q -f name=$CONTAINER_NAME)" ]; then
@@ -21,7 +21,7 @@ if [ ! "$(docker ps -q -f name=$CONTAINER_NAME)" ]; then
             echo "Timeout waiting for MySQL container to start."
             exit 1
         fi
-        sleep 1
+        sleep 5
     done
 fi
 
